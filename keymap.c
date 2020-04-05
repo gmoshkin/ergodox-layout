@@ -12,20 +12,6 @@
 #include "keymap_jp.h"
 #include "keymap_bepo.h"
 
-#define KC_MAC_UNDO  LGUI(KC_Z)
-#define KC_MAC_CUT   LGUI(KC_X)
-#define KC_MAC_COPY  LGUI(KC_C)
-#define KC_MAC_PASTE LGUI(KC_V)
-#define KC_PC_UNDO   LCTL(KC_Z)
-#define KC_PC_CUT    LCTL(KC_X)
-#define KC_PC_COPY   LCTL(KC_C)
-#define KC_PC_PASTE  LCTL(KC_V)
-#define ES_LESS_MAC  KC_GRAVE
-#define ES_GRTR_MAC  LSFT(KC_GRAVE)
-#define ES_BSLS_MAC  ALGR(KC_6)
-#define NO_PIPE_ALT  KC_GRAVE
-#define NO_BSLS_ALT  KC_EQUAL
-
 enum custom_keycodes {
   RGB_SLD = EZ_SAFE_RANGE,
   HSV_146_208_210,
@@ -35,110 +21,113 @@ enum custom_keycodes {
 };
 
 enum layers {
-  BASE,
-  SYMB/*OLS*/,
-  MEDI/*A*/,
-  SMTH,
+  BAS/*E*/,
+  SYM/*BOLS*/,
+  MED/*IA*/,
+  NIL,
 };
 
-#define KC__ KC_TRANSPARENT
+#define ___        KC_TRANSPARENT
+#define T_MED(KEY) LT(MED, KEY)
+#define CT(KEY)    LCTL_T(KEY)
+#define W_USB_P    WEBUSB_PAIR
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-  [BASE] = LAYOUT_ergodox(
+  [BAS] = LAYOUT_ergodox(
     // Left hand
-    KC_EQUAL,          KC_1,           KC_2,     KC_3,    KC_4,     KC_5, KC_ESCAPE,
-    KC_TAB,            KC_Q,           KC_W,     KC_E,    KC_R,     KC_T, TG(SYMB),
-    LCTL_T(KC_BSPACE), KC_A,           KC_S,     KC_D,    KC_F,     KC_G,
-    KC_LSHIFT,         LCTL_T(KC_Z),   KC_X,     KC_C,    KC_V,     KC_B, KC_LBRACKET,
-    MO(SYMB),          KC_GRAVE,       KC_QUOTE, KC_LEFT, KC_RIGHT,
+    KC_EQL      , KC_1     , KC_2    , KC_3   , KC_4    , KC_5 , KC_ESC  ,
+    KC_TAB      , KC_Q     , KC_W    , KC_E   , KC_R    , KC_T , TG(SYM) ,
+    CT(KC_BSPC) , KC_A     , KC_S    , KC_D   , KC_F    , KC_G ,
+    KC_LSFT     , CT(KC_Z) , KC_X    , KC_C   , KC_V    , KC_B , KC_LBRC ,
+    MO(SYM)     , KC_GRV   , KC_QUOT , KC_LEFT, KC_RGHT ,
 
-              LALT_T(KC_APPLICATION),  KC_LGUI,
-                                       KC_HOME,
-    KC_SPACE, LALT_T(KC_ESCAPE),       KC_END,
+               LALT_T(KC_APP) , KC_LGUI ,
+                                KC_HOME ,
+    KC_SPACE , LALT_T(KC_ESC) , KC_END  ,
 
     // Right hand
-    KC_DELETE,    KC_6,  KC_7,  KC_8,     KC_9,        KC_0,                KC_MINUS,
-    KC_BSPACE,    KC_Y,  KC_U,  KC_I,     KC_O,        KC_P,                KC_BSLASH,
-                  KC_H,  KC_J,  KC_K,     KC_L,        LT(MEDI, KC_SCOLON), RGUI_T(KC_QUOTE),
-    KC_RBRACKET,  KC_N,  KC_M,  KC_COMMA, KC_DOT,      RCTL_T(KC_SLASH),    KC_RSHIFT,
-                         KC_UP, KC_DOWN,  KC_LBRACKET, KC_RBRACKET,         MO(SYMB),
+    KC_DEL  , KC_6 , KC_7  , KC_8    , KC_9    , KC_0           , KC_MINS         ,
+    KC_BSPC , KC_Y , KC_U  , KC_I    , KC_O    , KC_P           , KC_BSLS         ,
+              KC_H , KC_J  , KC_K    , KC_L    , T_MED(KC_SCLN) , RGUI_T(KC_QUOT) ,
+    KC_RBRC , KC_N , KC_M  , KC_COMM , KC_DOT  , CT(KC_SLSH)    , KC_RSFT         ,
+                     KC_UP , KC_DOWN , KC_LBRC , KC_RBRC        , MO(SYM)         ,
 
-    KC_DELETE, LCTL_T(KC_ESCAPE),
-    KC_PGUP,
-    KC_PGDOWN, KC_TAB,            KC_ENTER
+    KC_DEL  , CT(KC_ESC) ,
+    KC_PGUP ,
+    KC_PGDN , KC_TAB         , KC_ENT
   ),
 
-  [SYMB] = LAYOUT_ergodox(
+  [SYM] = LAYOUT_ergodox(
     // Left hand
-    KC_ESCAPE, KC_F1,       KC_F2,    KC_F3,       KC_F4,       KC_F5,    KC__,
-    KC__,      KC_EXLM,     KC_AT,    KC_LCBR,     KC_RCBR,     KC_PIPE,  KC__,
-    KC__,      KC_HASH,     KC_DLR,   KC_LPRN,     KC_RPRN,     KC_GRAVE,
-    KC__,      KC_PERC,     KC_CIRC,  KC_LBRACKET, KC_RBRACKET, KC_TILD,  KC__,
-    KC__,      WEBUSB_PAIR, TG(SMTH), KC__,        KC__,
+    KC_ESC , KC_F1   , KC_F2   , KC_F3   , KC_F4   , KC_F5   , ___ ,
+    ___    , KC_EXLM , KC_AT   , KC_LCBR , KC_RCBR , KC_PIPE , ___ ,
+    ___    , KC_HASH , KC_DLR  , KC_LPRN , KC_RPRN , KC_GRV  ,
+    ___    , KC_PERC , KC_CIRC , KC_LBRC , KC_RBRC , KC_TILD , ___ ,
+    ___    , W_USB_P , TG(NIL) , ___     , ___     ,
 
               RGB_MOD , HSV_146_208_210 ,
                         HSV_48_255_153  ,
     RGB_VAD , RGB_VAI , HSV_0_200_220   ,
 
     // Right hand
-    KC__, KC_F6,   KC_F7,  KC_F8,  KC_F9, KC_F10,    KC_F11,
-    KC__, KC_UP,   KC_7,   KC_8,   KC_9,  KC_ASTR,   KC_F12,
-          KC_DOWN, KC_4,   KC_5,   KC_6,  KC_PLUS,   KC__,
-    KC__, KC_AMPR, KC_1,   KC_2,   KC_3,  KC_BSLASH, KC__,
-                   KC__,   KC_DOT, KC_0,  KC_EQUAL,  KC__,
+    ___ , KC_F6   , KC_F7 , KC_F8  , KC_F9 , KC_F10  , KC_F11 ,
+    ___ , KC_UP   , KC_7  , KC_8   , KC_9  , KC_ASTR , KC_F12 ,
+          KC_DOWN , KC_4  , KC_5   , KC_6  , KC_PLUS , ___    ,
+    ___ , KC_AMPR , KC_1  , KC_2   , KC_3  , KC_BSLS , ___    ,
+                    ___   , KC_DOT , KC_0  , KC_EQL  , ___    ,
 
     RGB_TOG            , RGB_SLD ,
     TOGGLE_LAYER_COLOR ,
     HSV_237_189_211    , RGB_HUD , RGB_HUI
   ),
 
-  [MEDI] = LAYOUT_ergodox(
+  [MED] = LAYOUT_ergodox(
     // Left hand
-    KC_SYSTEM_SLEEP, KC__, KC__,          KC__,       KC__,           KC__, KC__,
-    KC__,            KC__, KC_MS_WH_LEFT, KC_MS_UP,   KC_MS_WH_RIGHT, KC__, KC__,
-    KC__,            KC__, KC_MS_LEFT,    KC_MS_DOWN, KC_MS_RIGHT,    KC__,
-    KC__,            KC__, KC__,          KC__,       KC__,           KC__, KC__,
-    KC__,            KC__, KC__,          KC_MS_BTN2, KC_MS_BTN1,
+    KC_SLEP , ___ , ___     , ___     , ___     , ___ , ___ ,
+    ___     , ___ , KC_WH_L , KC_MS_U , KC_WH_R , ___ , ___ ,
+    ___     , ___ , KC_MS_L , KC_MS_D , KC_MS_R , ___ ,
+    ___     , ___ , ___     , ___     , ___     , ___ , ___ ,
+    ___     , ___ , ___     , KC_BTN2 , KC_BTN1 ,
 
-          KC__, KC__,
-                KC__,
-    KC__, KC__, KC__,
+           ___  , ___  ,
+                  ___  ,
+    ___  , ___  , ___  ,
 
     // Right hand
-    KC__, KC__,          KC__,                KC__,                KC__,                KC__,                   RESET,
-    KC__, KC_MS_WH_UP,   KC_AUDIO_VOL_UP,     KC_AUDIO_VOL_DOWN,   KC_AUDIO_MUTE,       LCTL(LSFT(KC_PSCREEN)), LSFT(KC_PSCREEN),
-          KC_MS_WH_DOWN, KC_MS_ACCEL0,        KC_MS_ACCEL1,        KC_MS_ACCEL2,        KC__,                   KC_MEDIA_PLAY_PAUSE,
-    KC__, KC_MS_BTN3,    KC_MEDIA_PLAY_PAUSE, KC_MEDIA_PREV_TRACK, KC_MEDIA_NEXT_TRACK, KC__,                   KC__,
-          KC_MS_BTN1,    KC_MS_BTN2,          KC_AUDIO_MUTE,       KC__,                KC__,
+    ___ , ___     , ___     , ___     , ___     , ___           , RESET      ,
+    ___ , KC_WH_U , KC_VOLU , KC_VOLD , KC_MUTE , C(S(KC_PSCR)) , S(KC_PSCR) ,
+          KC_WH_D , KC_ACL0 , KC_ACL1 , KC_ACL2 , ___           , KC_MPLY    ,
+    ___ , KC_BTN3 , KC_MPLY , KC_MPRV , KC_MNXT , ___           , ___        ,
+          KC_BTN1 , KC_BTN2 , KC_MUTE , ___     , ___           ,
 
-    KC__, KC__,
-    KC__,
-    KC__, KC_WWW_BACK, KC_WWW_FORWARD
+    ___  , ___     ,
+    ___  ,
+    ___  , KC_WBAK , KC_WFWD
   ),
 
-  [SMTH] = LAYOUT_ergodox(
+  [NIL] = LAYOUT_ergodox(
     // Left hand
-    KC__, KC__, KC__, KC__, KC__, KC__, KC__,
-    KC__, KC__, KC__, KC__, KC__, KC__, KC__,
-    KC__, KC__, KC__, KC__, KC__, KC__,
-    KC__, KC__, KC__, KC__, KC__, KC__, KC__,
-    KC__, KC__, KC__, KC__, KC__,
+    ___ , ___ , ___ , ___ , ___ , ___ , ___ ,
+    ___ , ___ , ___ , ___ , ___ , ___ , ___ ,
+    ___ , ___ , ___ , ___ , ___ , ___ ,
+    ___ , ___ , ___ , ___ , ___ , ___ , ___ ,
+    ___ , ___ , ___ , ___ , ___ ,
 
-          KC__, KC__,
-                KC__,
-    KC__, KC__, KC__,
+          ___ , ___ ,
+                ___ ,
+    ___ , ___ , ___ ,
 
     // Right hand
-    KC__, KC__, KC__, KC__, KC__, KC__, KC__,
-    KC__, KC__, KC__, KC__, KC__, KC__, KC__,
-          KC__, KC__, KC__, KC__, KC__, KC__,
-    KC__, KC__, KC__, KC__, KC__, KC__, KC__,
-                KC__, KC__, KC__, KC__, KC__,
+    ___ , ___ , ___ , ___ , ___ , ___ , ___ ,
+    ___ , ___ , ___ , ___ , ___ , ___ , ___ ,
+          ___ , ___ , ___ , ___ , ___ , ___ ,
+    ___ , ___ , ___ , ___ , ___ , ___ , ___ ,
+                ___ , ___ , ___ , ___ , ___ ,
 
-    KC__, KC__,
-    KC__,
-    KC__, KC__, KC__
+    ___ , ___ ,
+    ___ ,
+    ___ , ___ , ___
   ),
 
 };
@@ -163,7 +152,7 @@ void keyboard_post_init_user(void) {
 #define M 235,255,255
 
 const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][4] = {
-    [BASE] = {
+    [BAS] = {
       // Right hand: left -> right
       {B}, {B}, {B}, {B}, {B},
       {B}, {B}, {B}, {B}, {B},
@@ -179,7 +168,7 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][4] = {
            {B}, {B}, {B}, {B}
     },
 
-    [SYMB] = {
+    [SYM] = {
       // Right hand: left -> right
       {V}, {V}, {V}, {V}, {V},
       {B}, {Y}, {Y}, {Y}, {G},
@@ -195,23 +184,23 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][4] = {
            {B}, {B}, {O}, {R}
     },
 
-    [MEDI] = {
+    [MED] = {
       // Right hand: left -> right
       {R}, {R}, {R}, {R}, {R},
-      {B}, {M}, {M}, {M}, {R},
-      {B}, {R}, {R}, {R}, {R},
+      {V}, {M}, {M}, {M}, {R},
+      {V}, {R}, {R}, {R}, {R},
       {R}, {M}, {M}, {M}, {R},
            {G}, {Y}, {R}, {R},
 
       // Left hand: right -> left
       {R}, {R}, {R}, {R}, {R},
-      {R}, {R}, {B}, {R}, {R},
+      {R}, {V}, {B}, {V}, {R},
       {R}, {B}, {B}, {B}, {R},
       {R}, {R}, {R}, {R}, {R},
            {G}, {Y}, {R}, {R}
     },
 
-    [SMTH] = {
+    [NIL] = {
       // Right hand: left -> right
       {R}, {R}, {R}, {R}, {R},
       {G}, {G}, {G}, {G}, {G},
@@ -251,10 +240,10 @@ void rgb_matrix_indicators_user(void) {
   }
   switch (biton32(layer_state)) {
 #define CASE_LAYER(LAYER) case LAYER: set_layer_color(LAYER); break;
-    CASE_LAYER(BASE)
-    CASE_LAYER(SYMB)
-    CASE_LAYER(MEDI)
-    CASE_LAYER(SMTH)
+    CASE_LAYER(BAS)
+    CASE_LAYER(SYM)
+    CASE_LAYER(MED)
+    CASE_LAYER(NIL)
     default:
       if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
         rgb_matrix_set_color_all(0, 0, 0);
