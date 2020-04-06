@@ -30,6 +30,7 @@ enum layers {
 #define ___        KC_TRANSPARENT
 #define T_MED(KEY) LT(MED, KEY)
 #define CT(KEY)    LCTL_T(KEY)
+#define AT(KEY)    LALT_T(KEY)
 #define W_USB_P    WEBUSB_PAIR
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -42,9 +43,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LSFT     , CT(KC_Z) , KC_X    , KC_C   , KC_V    , KC_B , KC_LBRC ,
     MO(SYM)     , KC_GRV   , KC_QUOT , KC_LEFT, KC_RGHT ,
 
-               LALT_T(KC_APP) , KC_LGUI ,
-                                KC_HOME ,
-    KC_SPACE , LALT_T(KC_ESC) , KC_END  ,
+               AT(KC_APP) , KC_LGUI ,
+                            KC_END  ,
+    KC_SPACE , AT(KC_ESC) , KC_HOME ,
 
     // Right hand
     KC_DEL  , KC_6 , KC_7  , KC_8    , KC_9    , KC_0           , KC_MINS         ,
@@ -151,7 +152,7 @@ void keyboard_post_init_user(void) {
 #define V 168,255,200
 #define M 235,255,255
 
-const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][4] = {
+const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
     [BAS] = {
       // Right hand: left -> right
       {B}, {B}, {B}, {B}, {B},
