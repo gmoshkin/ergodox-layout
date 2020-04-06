@@ -27,7 +27,6 @@ enum layers {
   NIL,
 };
 
-#define ___        KC_TRANSPARENT
 #define T_MED(KEY) LT(MED, KEY)
 #define CT(KEY)    LCTL_T(KEY)
 #define AT(KEY)    LALT_T(KEY)
@@ -61,22 +60,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [SYM] = LAYOUT_ergodox(
     // Left hand
-    KC_ESC , KC_F1   , KC_F2   , KC_F3   , KC_F4   , KC_F5   , ___ ,
-    ___    , KC_EXLM , KC_AT   , KC_LCBR , KC_RCBR , KC_PIPE , ___ ,
-    ___    , KC_HASH , KC_DLR  , KC_LPRN , KC_RPRN , KC_GRV  ,
-    ___    , KC_PERC , KC_CIRC , KC_LBRC , KC_RBRC , KC_TILD , ___ ,
-    ___    , W_USB_P , TG(NIL) , ___     , ___     ,
+    KC_ESC , KC_F1   , KC_F2   , KC_F3   , KC_F4   , KC_F5   , _______ ,
+    _______, KC_EXLM , KC_AT   , KC_LCBR , KC_RCBR , KC_PIPE , _______ ,
+    _______, KC_HASH , KC_DLR  , KC_LPRN , KC_RPRN , KC_GRV  ,
+    _______, KC_PERC , KC_CIRC , KC_LBRC , KC_RBRC , KC_TILD , _______ ,
+    _______, W_USB_P , TG(NIL) , _______ , _______ ,
 
               RGB_MOD , HSV_146_208_210 ,
                         HSV_48_255_153  ,
     RGB_VAD , RGB_VAI , HSV_0_200_220   ,
 
     // Right hand
-    ___ , KC_F6   , KC_F7 , KC_F8  , KC_F9 , KC_F10  , KC_F11 ,
-    ___ , KC_UP   , KC_7  , KC_8   , KC_9  , KC_ASTR , KC_F12 ,
-          KC_DOWN , KC_4  , KC_5   , KC_6  , KC_PLUS , ___    ,
-    ___ , KC_AMPR , KC_1  , KC_2   , KC_3  , KC_BSLS , ___    ,
-                    ___   , KC_DOT , KC_0  , KC_EQL  , ___    ,
+    _______ , KC_F6   , KC_F7   , KC_F8  , KC_F9 , KC_F10  , KC_F11  ,
+    _______ , KC_UP   , KC_7    , KC_8   , KC_9  , KC_ASTR , KC_F12  ,
+              KC_DOWN , KC_4    , KC_5   , KC_6  , KC_PLUS , _______ ,
+    _______ , KC_AMPR , KC_1    , KC_2   , KC_3  , KC_BSLS , _______ ,
+                        _______ , KC_DOT , KC_0  , KC_EQL  , _______ ,
 
     RGB_TOG            , RGB_SLD ,
     TOGGLE_LAYER_COLOR ,
@@ -85,50 +84,50 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [MED] = LAYOUT_ergodox(
     // Left hand
-    KC_SLEP , ___ , ___     , ___     , ___     , ___ , ___ ,
-    ___     , ___ , KC_WH_L , KC_MS_U , KC_WH_R , ___ , ___ ,
-    ___     , ___ , KC_MS_L , KC_MS_D , KC_MS_R , ___ ,
-    ___     , ___ , ___     , ___     , ___     , ___ , ___ ,
-    ___     , ___ , ___     , KC_BTN2 , KC_BTN1 ,
+    KC_SLEP , _______ , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , KC_WH_L , KC_MS_U , KC_WH_R , _______ , _______ ,
+    _______ , _______ , KC_MS_L , KC_MS_D , KC_MS_R , _______ ,
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , _______ , KC_BTN2 , KC_BTN1 ,
 
-           ___  , ___  ,
-                  ___  ,
-    ___  , ___  , ___  ,
+              _______ , _______ ,
+                        _______ ,
+    _______ , _______ , _______ ,
 
     // Right hand
-    ___ , ___     , ___     , ___     , ___     , ___           , RESET      ,
-    ___ , KC_WH_U , KC_VOLU , KC_VOLD , KC_MUTE , C(S(KC_PSCR)) , S(KC_PSCR) ,
-          KC_WH_D , KC_ACL0 , KC_ACL1 , KC_ACL2 , ___           , KC_MPLY    ,
-    ___ , KC_BTN3 , KC_MPLY , KC_MPRV , KC_MNXT , ___           , ___        ,
-          KC_BTN1 , KC_BTN2 , KC_MUTE , ___     , ___           ,
+    _______ , _______ , _______ , _______ , _______ , _______       , RESET      ,
+    _______ , KC_WH_U , KC_VOLU , KC_VOLD , KC_MUTE , C(S(KC_PSCR)) , S(KC_PSCR) ,
+              KC_WH_D , KC_ACL0 , KC_ACL1 , KC_ACL2 , _______       , KC_MPLY    ,
+    _______ , KC_BTN3 , KC_MPLY , KC_MPRV , KC_MNXT , _______       , _______    ,
+                        KC_BTN1 , KC_BTN2 , KC_MUTE , _______       , _______    ,
 
-    ___  , ___     ,
-    ___  ,
-    ___  , KC_WBAK , KC_WFWD
+    _______ , _______ ,
+    _______ ,
+    _______ , KC_WBAK , KC_WFWD
   ),
 
   [NIL] = LAYOUT_ergodox(
     // Left hand
-    ___ , ___ , ___ , ___ , ___ , ___ , ___ ,
-    ___ , ___ , ___ , ___ , ___ , ___ , ___ ,
-    ___ , ___ , ___ , ___ , ___ , ___ ,
-    ___ , ___ , ___ , ___ , ___ , ___ , ___ ,
-    ___ , ___ , ___ , ___ , ___ ,
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , _______ , _______ , _______ ,
 
-          ___ , ___ ,
-                ___ ,
-    ___ , ___ , ___ ,
+              _______ , _______ ,
+                        _______ ,
+    _______ , _______ , _______ ,
 
     // Right hand
-    ___ , ___ , ___ , ___ , ___ , ___ , ___ ,
-    ___ , ___ , ___ , ___ , ___ , ___ , ___ ,
-          ___ , ___ , ___ , ___ , ___ , ___ ,
-    ___ , ___ , ___ , ___ , ___ , ___ , ___ ,
-                ___ , ___ , ___ , ___ , ___ ,
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+              _______ , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+                        _______ , _______ , _______ , _______ , _______ ,
 
-    ___ , ___ ,
-    ___ ,
-    ___ , ___ , ___
+    _______ , _______ ,
+    _______ ,
+    _______ , _______ , _______
   ),
 
 };
