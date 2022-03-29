@@ -21,50 +21,53 @@ enum custom_keycodes {
 };
 
 enum layers {
-  BAS/*E*/,
-  SYM/*BOLS*/,
-  MED/*IA*/,
+  BASE,    BAS = BASE,
+  SYMBOLS, SYM = SYMBOLS,
+  MEDIA,   MED = MEDIA,
+  GAMING,  GAM = GAMING,
+  SWAP,    SWP = SWAP,
   NIL,
 };
 
-#define T_MED(KEY) LT(MED, KEY)
+#define T_M(KEY)   LT(MED, KEY)
 #define CT(KEY)    LCTL_T(KEY)
 #define AT(KEY)    LALT_T(KEY)
+#define WT(KEY)    LGUI_T(KEY)
 #define W_USB_P    WEBUSB_PAIR
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-  [BAS] = LAYOUT_ergodox(
+  [BASE] = LAYOUT_ergodox(
     // Left hand
     KC_EQL      , KC_1    , KC_2    , KC_3   , KC_4    , KC_5 , KC_ESC  ,
-    KC_TAB      , KC_Q    , KC_W    , KC_E   , KC_R    , KC_T , TG(SYM) ,
+    KC_TAB      , KC_Q    , KC_W    , KC_E   , KC_R    , KC_T , KC_DEL  ,
     CT(KC_BSPC) , KC_A    , KC_S    , KC_D   , KC_F    , KC_G ,
     KC_LSFT     , KC_Z    , KC_X    , KC_C   , KC_V    , KC_B , KC_LBRC ,
     MO(SYM)     , KC_GRV  , KC_QUOT , KC_LEFT, KC_RGHT ,
 
-               AT(KC_APP) , KC_LGUI ,
-                            KC_END  ,
-    KC_SPACE , AT(KC_ESC) , KC_HOME ,
+               KC_APP     , KC_END  ,
+                            KC_HOME ,
+    KC_SPACE , AT(KC_ESC) , KC_LGUI ,
 
     // Right hand
-    KC_DEL  , KC_6 , KC_7  , KC_8    , KC_9    , KC_0           , KC_MINS         ,
-    KC_BSPC , KC_Y , KC_U  , KC_I    , KC_O    , KC_P           , KC_BSLS         ,
-              KC_H , KC_J  , KC_K    , KC_L    , T_MED(KC_SCLN) , RGUI_T(KC_QUOT) ,
-    KC_RBRC , KC_N , KC_M  , KC_COMM , KC_DOT  , KC_SLSH        , KC_RSFT         ,
-                     KC_UP , KC_DOWN , KC_LBRC , KC_RBRC        , MO(SYM)         ,
+    KC_ESC  , KC_6 , KC_7  , KC_8    , KC_9    , KC_0         , KC_MINS     ,
+    KC_BSPC , KC_Y , KC_U  , KC_I    , KC_O    , KC_P         , KC_BSLS     ,
+              KC_H , KC_J  , KC_K    , KC_L    , T_M(KC_SCLN) , WT(KC_QUOT) ,
+    KC_RBRC , KC_N , KC_M  , KC_COMM , KC_DOT  , KC_SLSH      , KC_RSFT     ,
+                     KC_UP , KC_DOWN , KC_LBRC , KC_RBRC      , MO(SYM)     ,
 
-    KC_DEL  , KC_LCTL ,
-    KC_PGUP ,
-    KC_PGDN , KC_RCTL , KC_ENT
+    KC_PGUP , KC_LCTL ,
+    KC_PGDN ,
+    KC_DEL  , KC_RCTL , KC_ENT
   ),
 
-  [SYM] = LAYOUT_ergodox(
+  [SYMBOLS] = LAYOUT_ergodox(
     // Left hand
     KC_ESC , KC_F1   , KC_F2   , KC_F3   , KC_F4   , KC_F5   , _______ ,
     _______, KC_EXLM , KC_AT   , KC_LCBR , KC_RCBR , KC_PIPE , _______ ,
     _______, KC_HASH , KC_DLR  , KC_LPRN , KC_RPRN , KC_GRV  ,
     _______, KC_PERC , KC_CIRC , KC_LBRC , KC_RBRC , KC_TILD , _______ ,
-    _______, W_USB_P , TG(NIL) , _______ , _______ ,
+    _______, W_USB_P , TG(NIL) , _______ , TG(SWP) ,
 
               RGB_MOD , HSV_146_208_210 ,
                         HSV_48_255_153  ,
@@ -75,18 +78,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______ , KC_UP   , KC_7    , KC_8   , KC_9  , KC_ASTR , KC_F12  ,
               KC_DOWN , KC_4    , KC_5   , KC_6  , KC_PLUS , _______ ,
     _______ , KC_AMPR , KC_1    , KC_2   , KC_3  , KC_BSLS , _______ ,
-                        _______ , KC_DOT , KC_0  , KC_EQL  , _______ ,
+                        TG(SWP) , KC_DOT , KC_0  , KC_EQL  , _______ ,
 
     RGB_TOG            , RGB_SLD ,
     TOGGLE_LAYER_COLOR ,
     HSV_237_189_211    , RGB_HUD , RGB_HUI
   ),
 
-  [MED] = LAYOUT_ergodox(
+  [MEDIA] = LAYOUT_ergodox(
     // Left hand
     KC_SLEP , _______ , _______ , _______ , _______ , _______ , _______ ,
     _______ , _______ , KC_WH_L , KC_MS_U , KC_WH_R , _______ , _______ ,
-    _______ , _______ , KC_MS_L , KC_MS_D , KC_MS_R , _______ ,
+    _______ , _______ , KC_MS_L , KC_MS_D , KC_MS_R , TG(GAM) ,
     _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
     _______ , _______ , _______ , KC_BTN2 , KC_BTN1 ,
 
@@ -95,15 +98,63 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______ , _______ , _______ ,
 
     // Right hand
-    _______ , _______ , _______ , _______ , _______ , _______       , RESET      ,
-    _______ , KC_WH_U , KC_VOLU , KC_VOLD , KC_MUTE , C(S(KC_PSCR)) , S(KC_PSCR) ,
-              KC_WH_D , KC_ACL0 , KC_ACL1 , KC_ACL2 , _______       , KC_MPLY    ,
-    _______ , KC_BTN3 , KC_MPLY , KC_MPRV , KC_MNXT , _______       , _______    ,
-                        KC_BTN1 , KC_BTN2 , KC_MUTE , _______       , _______    ,
+    _______ , _______ , _______ , _______ , _______ , _______ , RESET      ,
+    _______ , KC_WH_U , KC_VOLU , KC_VOLD , KC_MUTE , KC_PSCR , S(KC_PSCR) ,
+              KC_WH_D , KC_ACL0 , KC_ACL1 , KC_ACL2 , _______ , KC_MPLY    ,
+    _______ , KC_BTN3 , KC_MPLY , KC_MPRV , KC_MNXT , _______ , _______    ,
+                        KC_BTN1 , KC_BTN2 , KC_MUTE , _______ , _______    ,
 
     _______ , _______ ,
     _______ ,
     _______ , KC_WBAK , KC_WFWD
+  ),
+
+  [GAMING] = LAYOUT_ergodox(
+    // Left hand
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+    KC_LCTL , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , _______ , _______ , _______ ,
+
+              _______ , _______ ,
+                        _______ ,
+    _______ , KC_LALT , KC_ESC  ,
+
+    // Right hand
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+              _______ , _______ , _______ , _______ , _______ , _______ ,
+    _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
+                        _______ , _______ , _______ , _______ , _______ ,
+
+    _______ , _______ ,
+    _______ ,
+    _______ , _______ , _______
+  ),
+
+  [SWAP] = LAYOUT_ergodox(
+    // Left hand
+    KC_MINS     , KC_6      , KC_7    , KC_8    , KC_9    , KC_0    , KC_ESC  ,
+    KC_BSLS     , KC_Y      , KC_U    , KC_I    , KC_O    , KC_P    , KC_BSPC ,
+    WT(KC_QUOT) , T_M(KC_H) , KC_J    , KC_K    , KC_L    , KC_SCLN ,
+    KC_RSFT     , KC_N      , KC_M    , KC_COMM , KC_DOT  , KC_SLSH , KC_RBRC ,
+    TG(SWP)     , KC_LBRC   , KC_RBRC , KC_DOWN , KC_UP   ,
+
+              KC_LCTL , KC_PGUP ,
+                        KC_PGDN ,
+    KC_ENT  , KC_RCTL , KC_DEL  ,
+
+    // Right hand
+    KC_ESC  , KC_1 , KC_2    , KC_3    , KC_4   , KC_5    , KC_EQL      ,
+    KC_DEL  , KC_Q , KC_W    , KC_E    , KC_R   , KC_T    , KC_TAB      ,
+              KC_A , KC_S    , KC_D    , KC_F   , KC_G    , CT(KC_BSPC) ,
+    KC_LBRC , KC_Z , KC_X    , KC_C    , KC_V   , KC_B    , KC_LSFT     ,
+                     KC_LEFT , KC_RGHT , KC_GRV , KC_QUOT , TG(SWP)     ,
+
+    KC_END  , KC_APP     ,
+    KC_HOME ,
+    KC_LGUI , AT(KC_ESC) , KC_SPACE
   ),
 
   [NIL] = LAYOUT_ergodox(
