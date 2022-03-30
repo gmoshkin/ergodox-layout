@@ -14,10 +14,11 @@
 
 enum custom_keycodes {
   RGB_SLD = EZ_SAFE_RANGE,
-  HSV_146_208_210,
-  HSV_48_255_153,
-  HSV_0_200_220,
-  HSV_237_189_211,
+  YEGO_RGB_FREQ_UP,       YF_UP  = YEGO_RGB_FREQ_UP,
+  YEGO_RGB_FREQ_DOWN,     YF_DWN = YEGO_RGB_FREQ_DOWN,
+  YEGO_RGB_FREQ_DEFAULT,  YF_DEF = YEGO_RGB_FREQ_DEFAULT,
+  YEGO_RGB_FREQ_SAVE,     YF_SAV = YEGO_RGB_FREQ_SAVE,
+  YEGO_RGB_FREQ_RESTORE,  YF_RES = YEGO_RGB_FREQ_RESTORE,
 };
 
 enum layers {
@@ -69,9 +70,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, KC_PERC , KC_CIRC , KC_LBRC , KC_RBRC , KC_TILD , _______ ,
     _______, W_USB_P , TG(NIL) , _______ , TG(SWP) ,
 
-              RGB_MOD , HSV_146_208_210 ,
-                        HSV_48_255_153  ,
-    RGB_VAD , RGB_VAI , HSV_0_200_220   ,
+              RGB_MOD , _______ ,
+                        _______ ,
+    RGB_VAD , RGB_VAI , _______ ,
 
     // Right hand
     _______ , KC_F6   , KC_F7   , KC_F8  , KC_F9 , KC_F10  , KC_F11  ,
@@ -82,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     RGB_TOG            , RGB_SLD ,
     TOGGLE_LAYER_COLOR ,
-    HSV_237_189_211    , RGB_HUD , RGB_HUI
+    _______            , RGB_HUD , RGB_HUI
   ),
 
   [MEDIA] = LAYOUT_ergodox(
@@ -93,9 +94,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
     _______ , _______ , _______ , KC_BTN2 , KC_BTN1 ,
 
-              _______ , _______ ,
-                        _______ ,
-    _______ , _______ , _______ ,
+              YF_SAV  , YF_UP   ,
+                        YF_DWN  ,
+    _______ , YF_RES  , YF_DEF  ,
 
     // Right hand
     _______ , _______ , _______ , _______ , _______ , _______ , RESET      ,
@@ -284,22 +285,57 @@ void set_layer_color(int layer) {
   }
 }
 
+typedef struct {
+  uint8_t row, col;
+} yego_pos_t;
+
+static yego_pos_t yego_black_pos = { .row = 0, .col = 0 };
+
+static inline void yego_black_move_row(int8_t ofs) {
+  int8_t new = yego_black_pos.row + ofs;
+  yego_black_pos.row = (new < 0) ? 4 : (new > 4) ? 0 : new;
+}
+
+static inline void yego_black_move_col(int8_t ofs) {
+  int8_t new = yego_black_pos.col + ofs;
+  yego_black_pos.col = (new < 0) ? 9 : (new > 9) ? 0 : new;
+}
+
+static inline uint8_t yego_pos_to_led_index(yego_pos_t pos) {
+  uint8_t res = 0;
+  if (pos.row == 4 && (pos.col == 4 || pos.col == 5)) return -1;
+  if (pos.col < 5) { // left hand
+    res = 24;
+    res += pos.row * 5;
+    res += 4 - pos.col;
+    if (pos.row == 4) res -= 1;
+  } else { // right hand
+    res += pos.row * 5;
+    res += pos.col - 5;
+    if (pos.row == 4) res -= 1;
+  }
+
+  return res;
+}
+
+static uint8_t yego_hue = 0;
+#define YEGO_FREQ_DEFAULT 4
+static uint8_t yego_freq_saved = YEGO_FREQ_DEFAULT;
+static uint8_t yego_freq = YEGO_FREQ_DEFAULT;
+
 void rgb_matrix_indicators_user(void) {
-  if (keyboard_config.disable_layer_led) {
-    return;
-  }
-  switch (biton32(layer_state)) {
-#define CASE_LAYER(LAYER) case LAYER: set_layer_color(LAYER); break;
-    CASE_LAYER(BAS)
-    CASE_LAYER(SYM)
-    CASE_LAYER(MED)
-    CASE_LAYER(NIL)
-    default:
-      if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
-        rgb_matrix_set_color_all(0, 0, 0);
-      }
-    break;
-  }
+  if (keyboard_config.disable_layer_led) return;
+
+  static int yego_tick = 0;
+
+  if (++yego_tick % yego_freq == 0) ++yego_hue;
+
+  RGB rgb = hsv_to_rgb((HSV) { .h = yego_hue, .s = 255, .v = 255 });
+  rgb_matrix_set_color_all(rgb.r, rgb.g, rgb.b);
+
+  uint8_t idx = yego_pos_to_led_index(yego_black_pos);
+  if (idx == (uint8_t) -1) return;
+  rgb_matrix_set_color(idx, 0, 0, 0);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -309,30 +345,33 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         rgblight_mode(1);
       }
       return false;
-    case HSV_146_208_210:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(146,208,210);
-      }
+    case YEGO_RGB_FREQ_UP:
+      if (record->event.pressed) ++yego_freq;
       return false;
-    case HSV_48_255_153:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(48,255,153);
-      }
+    case YEGO_RGB_FREQ_DOWN:
+      if (record->event.pressed) --yego_freq;
       return false;
-    case HSV_0_200_220:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(0,200,220);
-      }
+    case YEGO_RGB_FREQ_DEFAULT:
+      if (record->event.pressed) yego_freq = YEGO_FREQ_DEFAULT;
       return false;
-    case HSV_237_189_211:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(237,189,211);
-      }
+    case YEGO_RGB_FREQ_SAVE:
+      if (record->event.pressed) yego_freq_saved = yego_freq;
       return false;
+    case YEGO_RGB_FREQ_RESTORE:
+      if (record->event.pressed) yego_freq = yego_freq_saved;
+      return false;
+    case KC_UP:
+      if (record->event.pressed) yego_black_move_row(-1);
+      return true;
+    case KC_DOWN:
+      if (record->event.pressed) yego_black_move_row(+1);
+      return true;
+    case KC_LEFT:
+      if (record->event.pressed) yego_black_move_col(-1);
+      return true;
+    case KC_RIGHT:
+      if (record->event.pressed) yego_black_move_col(+1);
+      return true;
   }
   return true;
 }
