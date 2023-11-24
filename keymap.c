@@ -204,123 +204,183 @@ void keyboard_post_init_user(void) {
 #define V 168,255,200
 #define M 235,255,255
 
-const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
-    [BAS] = {
-      // Right hand: left -> right
-      {B}, {B}, {B}, {B}, {B},
-      {B}, {B}, {B}, {B}, {B},
-      {B}, {B}, {B}, {B}, {R},
-      {B}, {B}, {B}, {B}, {G},
-           {B}, {B}, {B}, {B},
+#define YEGO_LED_INDEX_KEY_1       28
+#define YEGO_LED_INDEX_KEY_2       27
+#define YEGO_LED_INDEX_KEY_3       26
+#define YEGO_LED_INDEX_KEY_4       25
+#define YEGO_LED_INDEX_KEY_5       24
+#define YEGO_LED_INDEX_KEY_6        0
+#define YEGO_LED_INDEX_KEY_7        1
+#define YEGO_LED_INDEX_KEY_8        2
+#define YEGO_LED_INDEX_KEY_9        3
+#define YEGO_LED_INDEX_KEY_0        4
+#define YEGO_LED_INDEX_KEY_Q       33
+#define YEGO_LED_INDEX_KEY_W       32
+#define YEGO_LED_INDEX_KEY_E       31
+#define YEGO_LED_INDEX_KEY_R       30
+#define YEGO_LED_INDEX_KEY_T       29
+#define YEGO_LED_INDEX_KEY_Y        5
+#define YEGO_LED_INDEX_KEY_U        6
+#define YEGO_LED_INDEX_KEY_I        7
+#define YEGO_LED_INDEX_KEY_O        8
+#define YEGO_LED_INDEX_KEY_P        9
+#define YEGO_LED_INDEX_KEY_A       38
+#define YEGO_LED_INDEX_KEY_S       37
+#define YEGO_LED_INDEX_KEY_D       36
+#define YEGO_LED_INDEX_KEY_F       35
+#define YEGO_LED_INDEX_KEY_G       34
+#define YEGO_LED_INDEX_KEY_H       10
+#define YEGO_LED_INDEX_KEY_J       11
+#define YEGO_LED_INDEX_KEY_K       12
+#define YEGO_LED_INDEX_KEY_L       13
+#define YEGO_LED_INDEX_KEY_colon   14
+#define YEGO_LED_INDEX_KEY_Z       43
+#define YEGO_LED_INDEX_KEY_X       42
+#define YEGO_LED_INDEX_KEY_C       41
+#define YEGO_LED_INDEX_KEY_V       40
+#define YEGO_LED_INDEX_KEY_B       39
+#define YEGO_LED_INDEX_KEY_N       15
+#define YEGO_LED_INDEX_KEY_M       16
+#define YEGO_LED_INDEX_KEY_lt      17
+#define YEGO_LED_INDEX_KEY_gt      18
+#define YEGO_LED_INDEX_KEY_qmark   19
+#define YEGO_LED_INDEX_KEY_tilde   47
+#define YEGO_LED_INDEX_KEY_dquote  46
+#define YEGO_LED_INDEX_KEY_left    45
+#define YEGO_LED_INDEX_KEY_right   44
+#define YEGO_LED_INDEX_KEY_up      20
+#define YEGO_LED_INDEX_KEY_down    21
+#define YEGO_LED_INDEX_KEY_lb      22
+#define YEGO_LED_INDEX_KEY_rb      23
 
-      // Left hand: right -> left
-      {B}, {B}, {B}, {B}, {B},
-      {B}, {B}, {B}, {B}, {B},
-      {B}, {B}, {B}, {B}, {B},
-      {B}, {B}, {B}, {B}, {G},
-           {B}, {B}, {B}, {B}
-    },
-
-    [SYM] = {
-      // Right hand: left -> right
-      {V}, {V}, {V}, {V}, {V},
-      {B}, {Y}, {Y}, {Y}, {G},
-      {B}, {Y}, {Y}, {Y}, {G},
-      {G}, {Y}, {Y}, {Y}, {G},
-           {B}, {G}, {Y}, {G},
-
-      // Left hand: right -> left
-      {V}, {V}, {V}, {V}, {V},
-      {G}, {M}, {M}, {G}, {G},
-      {G}, {M}, {M}, {G}, {G},
-      {G}, {M}, {M}, {G}, {G},
-           {B}, {B}, {O}, {R}
-    },
-
-    [MED] = {
-      // Right hand: left -> right
-      {R}, {R}, {R}, {R}, {R},
-      {V}, {M}, {M}, {M}, {R},
-      {V}, {R}, {R}, {R}, {R},
-      {R}, {M}, {M}, {M}, {R},
-           {G}, {Y}, {R}, {R},
-
-      // Left hand: right -> left
-      {R}, {R}, {R}, {R}, {R},
-      {R}, {V}, {B}, {V}, {R},
-      {R}, {B}, {B}, {B}, {R},
-      {R}, {R}, {R}, {R}, {R},
-           {G}, {Y}, {R}, {R}
-    },
-
-    [NIL] = {
-      // Right hand: left -> right
-      {R}, {R}, {R}, {R}, {R},
-      {G}, {G}, {G}, {G}, {G},
-      {B}, {B}, {B}, {B}, {B},
-      {Y}, {Y}, {Y}, {Y}, {Y},
-           {M}, {M}, {M}, {M},
-
-      // Left hand: right -> left
-      {R}, {R}, {R}, {R}, {R},
-      {G}, {G}, {G}, {G}, {G},
-      {B}, {B}, {B}, {B}, {B},
-      {Y}, {Y}, {Y}, {Y}, {Y},
-           {M}, {M}, {M}, {M},
-    },
-};
-
-void set_layer_color(int layer) {
-  for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-    HSV hsv = {
-      .h = pgm_read_byte(&ledmap[layer][i][0]),
-      .s = pgm_read_byte(&ledmap[layer][i][1]),
-      .v = pgm_read_byte(&ledmap[layer][i][2]),
-    };
-    if (!hsv.h && !hsv.s && !hsv.v) {
-        rgb_matrix_set_color( i, 0, 0, 0 );
-    } else {
-        RGB rgb = hsv_to_rgb( hsv );
-        float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
-        rgb_matrix_set_color( i, f * rgb.r, f * rgb.g, f * rgb.b );
-    }
+static inline uint8_t yego_led_index_world_to_internal(uint8_t index) {
+  switch (index) {
+    case  0: return YEGO_LED_INDEX_KEY_1;
+    case  1: return YEGO_LED_INDEX_KEY_2;
+    case  2: return YEGO_LED_INDEX_KEY_3;
+    case  3: return YEGO_LED_INDEX_KEY_4;
+    case  4: return YEGO_LED_INDEX_KEY_5;
+    case  5: return YEGO_LED_INDEX_KEY_6;
+    case  6: return YEGO_LED_INDEX_KEY_7;
+    case  7: return YEGO_LED_INDEX_KEY_8;
+    case  8: return YEGO_LED_INDEX_KEY_9;
+    case  9: return YEGO_LED_INDEX_KEY_0;
+    case 10: return YEGO_LED_INDEX_KEY_Q;
+    case 11: return YEGO_LED_INDEX_KEY_W;
+    case 12: return YEGO_LED_INDEX_KEY_E;
+    case 13: return YEGO_LED_INDEX_KEY_R;
+    case 14: return YEGO_LED_INDEX_KEY_T;
+    case 15: return YEGO_LED_INDEX_KEY_Y;
+    case 16: return YEGO_LED_INDEX_KEY_U;
+    case 17: return YEGO_LED_INDEX_KEY_I;
+    case 18: return YEGO_LED_INDEX_KEY_O;
+    case 19: return YEGO_LED_INDEX_KEY_P;
+    case 20: return YEGO_LED_INDEX_KEY_A;
+    case 21: return YEGO_LED_INDEX_KEY_S;
+    case 22: return YEGO_LED_INDEX_KEY_D;
+    case 23: return YEGO_LED_INDEX_KEY_F;
+    case 24: return YEGO_LED_INDEX_KEY_G;
+    case 25: return YEGO_LED_INDEX_KEY_H;
+    case 26: return YEGO_LED_INDEX_KEY_J;
+    case 27: return YEGO_LED_INDEX_KEY_K;
+    case 28: return YEGO_LED_INDEX_KEY_L;
+    case 29: return YEGO_LED_INDEX_KEY_colon;
+    case 30: return YEGO_LED_INDEX_KEY_Z;
+    case 31: return YEGO_LED_INDEX_KEY_X;
+    case 32: return YEGO_LED_INDEX_KEY_C;
+    case 33: return YEGO_LED_INDEX_KEY_V;
+    case 34: return YEGO_LED_INDEX_KEY_B;
+    case 35: return YEGO_LED_INDEX_KEY_N;
+    case 36: return YEGO_LED_INDEX_KEY_M;
+    case 37: return YEGO_LED_INDEX_KEY_lt;
+    case 38: return YEGO_LED_INDEX_KEY_gt;
+    case 39: return YEGO_LED_INDEX_KEY_qmark;
+    case 40: return YEGO_LED_INDEX_KEY_tilde;
+    case 41: return YEGO_LED_INDEX_KEY_dquote;
+    case 42: return YEGO_LED_INDEX_KEY_left;
+    case 43: return YEGO_LED_INDEX_KEY_right;
+    case 44: return YEGO_LED_INDEX_KEY_up;
+    case 45: return YEGO_LED_INDEX_KEY_down;
+    case 46: return YEGO_LED_INDEX_KEY_lb;
+    case 47: return YEGO_LED_INDEX_KEY_rb;
+    default: return 0xff;
   }
 }
 
-typedef struct {
-  uint8_t row, col;
-} yego_pos_t;
-
-static yego_pos_t yego_black_pos = { .row = 0, .col = 0 };
-
-static inline void yego_black_move_row(int8_t ofs) {
-  int8_t new = yego_black_pos.row + ofs;
-  yego_black_pos.row = (new < 0) ? 4 : (new > 4) ? 0 : new;
-}
-
-static inline void yego_black_move_col(int8_t ofs) {
-  int8_t new = yego_black_pos.col + ofs;
-  yego_black_pos.col = (new < 0) ? 9 : (new > 9) ? 0 : new;
-}
-
-static inline uint8_t yego_pos_to_led_index(yego_pos_t pos) {
-  uint8_t res = 0;
-  if (pos.row == 4 && (pos.col == 4 || pos.col == 5)) return -1;
-  if (pos.col < 5) { // left hand
-    res = 24;
-    res += pos.row * 5;
-    res += 4 - pos.col;
-    if (pos.row == 4) res -= 1;
-  } else { // right hand
-    res += pos.row * 5;
-    res += pos.col - 5;
-    if (pos.row == 4) res -= 1;
+static inline uint8_t yego_row_column_to_led_index_internal(uint8_t row, uint8_t col) {
+  switch (row) {
+    case 0:
+      switch (col) {
+        case  1: return YEGO_LED_INDEX_KEY_1;
+        case  2: return YEGO_LED_INDEX_KEY_2;
+        case  3: return YEGO_LED_INDEX_KEY_3;
+        case  4: return YEGO_LED_INDEX_KEY_4;
+        case  5: return YEGO_LED_INDEX_KEY_5;
+        case  8: return YEGO_LED_INDEX_KEY_6;
+        case  9: return YEGO_LED_INDEX_KEY_7;
+        case 10: return YEGO_LED_INDEX_KEY_8;
+        case 11: return YEGO_LED_INDEX_KEY_9;
+        case 12: return YEGO_LED_INDEX_KEY_0;
+        default: return 0xff;
+      }
+    case 1:
+      switch (col) {
+        case  1: return YEGO_LED_INDEX_KEY_Q;
+        case  2: return YEGO_LED_INDEX_KEY_W;
+        case  3: return YEGO_LED_INDEX_KEY_E;
+        case  4: return YEGO_LED_INDEX_KEY_R;
+        case  5: return YEGO_LED_INDEX_KEY_T;
+        case  8: return YEGO_LED_INDEX_KEY_Y;
+        case  9: return YEGO_LED_INDEX_KEY_U;
+        case 10: return YEGO_LED_INDEX_KEY_I;
+        case 11: return YEGO_LED_INDEX_KEY_O;
+        case 12: return YEGO_LED_INDEX_KEY_P;
+        default: return 0xff;
+      }
+    case 2:
+      switch (col) {
+        case  1: return YEGO_LED_INDEX_KEY_A;
+        case  2: return YEGO_LED_INDEX_KEY_S;
+        case  3: return YEGO_LED_INDEX_KEY_D;
+        case  4: return YEGO_LED_INDEX_KEY_F;
+        case  5: return YEGO_LED_INDEX_KEY_G;
+        case  8: return YEGO_LED_INDEX_KEY_H;
+        case  9: return YEGO_LED_INDEX_KEY_J;
+        case 10: return YEGO_LED_INDEX_KEY_K;
+        case 11: return YEGO_LED_INDEX_KEY_L;
+        case 12: return YEGO_LED_INDEX_KEY_colon;
+        default: return 0xff;
+      }
+    case 3:
+      switch (col) {
+        case  1: return YEGO_LED_INDEX_KEY_Z;
+        case  2: return YEGO_LED_INDEX_KEY_X;
+        case  3: return YEGO_LED_INDEX_KEY_C;
+        case  4: return YEGO_LED_INDEX_KEY_V;
+        case  5: return YEGO_LED_INDEX_KEY_B;
+        case  8: return YEGO_LED_INDEX_KEY_N;
+        case  9: return YEGO_LED_INDEX_KEY_M;
+        case 10: return YEGO_LED_INDEX_KEY_lt;
+        case 11: return YEGO_LED_INDEX_KEY_gt;
+        case 12: return YEGO_LED_INDEX_KEY_qmark;
+        default: return 0xff;
+      }
+    case 4:
+      switch (col) {
+        case  1: return YEGO_LED_INDEX_KEY_tilde;
+        case  2: return YEGO_LED_INDEX_KEY_dquote;
+        case  3: return YEGO_LED_INDEX_KEY_left;
+        case  4: return YEGO_LED_INDEX_KEY_right;
+        case  9: return YEGO_LED_INDEX_KEY_up;
+        case 10: return YEGO_LED_INDEX_KEY_down;
+        case 11: return YEGO_LED_INDEX_KEY_lb;
+        case 12: return YEGO_LED_INDEX_KEY_rb;
+        default: return 0xff;
+      }
+    default: return 0xff;
   }
-
-  return res;
 }
 
-static uint8_t yego_hue = 0;
 #define YEGO_FREQ_DEFAULT 4
 static uint8_t yego_freq_saved = YEGO_FREQ_DEFAULT;
 static uint8_t yego_freq = YEGO_FREQ_DEFAULT;
@@ -328,16 +388,35 @@ static uint8_t yego_freq = YEGO_FREQ_DEFAULT;
 void rgb_matrix_indicators_user(void) {
   if (keyboard_config.disable_layer_led) return;
 
-  static int yego_tick = 0;
+  static int current_tick = 0;
+  static uint8_t current_led_hue = 0;
+  static uint8_t led_hue_offset_buffer[48] = {0};
 
-  if (++yego_tick % yego_freq == 0) ++yego_hue;
+  if (++current_tick % yego_freq == 0) ++current_led_hue;
+  uint8_t hue_delta_this_tick = 1;
 
-  RGB rgb = hsv_to_rgb((HSV) { .h = yego_hue, .s = 255, .v = 255 });
-  rgb_matrix_set_color_all(rgb.r, rgb.g, rgb.b);
+  HSV hsv = (HSV) { .h = current_led_hue, .s = 255, .v = 255 };
+  RGB rgb;
 
-  uint8_t idx = yego_pos_to_led_index(yego_black_pos);
-  if (idx == (uint8_t) -1) return;
-  rgb_matrix_set_color(idx, 0, 0, 0);
+  for (uint8_t row = 0; row < 5; row++) {
+    for (uint8_t col = 1; col < 13; col++) {
+      if (col == 6 || col == 7) continue;
+      int i = yego_row_column_to_led_index_internal(row, col);
+      if (i == 0xff) continue;
+
+      uint8_t *hue_offset = &led_hue_offset_buffer[i];
+      if (*hue_offset > 0) *hue_offset -= hue_delta_this_tick;
+      /*
+       * I don't know who called these rows & cols,
+       * I can see that on my ergodox these are definitely inverted
+       */
+      if (matrix_is_on(col, row)) *hue_offset = 128;
+
+      hsv.h = current_led_hue - *hue_offset;
+      rgb = hsv_to_rgb(hsv);
+      rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+    }
+  }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -362,18 +441,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case YEGO_RGB_FREQ_RESTORE:
       if (record->event.pressed) yego_freq = yego_freq_saved;
       return false;
-    case KC_UP:
-      if (record->event.pressed) yego_black_move_row(-1);
-      return true;
-    case KC_DOWN:
-      if (record->event.pressed) yego_black_move_row(+1);
-      return true;
-    case KC_LEFT:
-      if (record->event.pressed) yego_black_move_col(-1);
-      return true;
-    case KC_RIGHT:
-      if (record->event.pressed) yego_black_move_col(+1);
-      return true;
   }
   return true;
 }
