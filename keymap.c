@@ -34,7 +34,9 @@ enum layers {
 #define CT(KEY)    LCTL_T(KEY)
 #define AT(KEY)    LALT_T(KEY)
 #define WT(KEY)    LGUI_T(KEY)
+#define ST(KEY)    LSFT_T(KEY)
 #define W_USB_P    WEBUSB_PAIR
+#define KC_SPC     KC_SPACE
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -48,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                KC_APP     , KC_END  ,
                             KC_HOME ,
-    KC_SPACE , AT(KC_ESC) , KC_LGUI ,
+    KC_LCTL, KC_SPC, AT(KC_ESC),
 
     // Right hand
     KC_ESC  , KC_6 , KC_7  , KC_8    , KC_9    , KC_0         , KC_MINS     ,
@@ -59,7 +61,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     KC_PGUP , KC_LCTL ,
     KC_PGDN ,
-    KC_DEL  , KC_RCTL , KC_ENT
+    KC_DEL  , KC_ENT, KC_RSFT
   ),
 
   [SYMBOLS] = LAYOUT_ergodox(
@@ -120,7 +122,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
               _______ , _______ ,
                         _______ ,
-    _______ , KC_LALT , KC_ESC  ,
+    KC_SPC  , KC_LALT , KC_ESC  ,
 
     // Right hand
     _______ , _______ , _______ , _______ , _______ , _______ , _______ ,
@@ -131,7 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     _______ , _______ ,
     _______ ,
-    _______ , _______ , _______
+    _______ , _______ , KC_ENT
   ),
 
   [SWAP] = LAYOUT_ergodox(
