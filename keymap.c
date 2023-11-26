@@ -392,8 +392,11 @@ void rgb_matrix_indicators_user(void) {
   static uint8_t current_led_hue = 0;
   static uint8_t led_hue_offset_buffer[48] = {0};
 
-  if (++current_tick % yego_freq == 0) ++current_led_hue;
-  uint8_t hue_delta_this_tick = 1;
+  current_tick += 1;
+  if (current_tick % yego_freq == 0) ++current_led_hue;
+
+  uint8_t hue_delta_this_tick = 0;
+  if (current_tick % (yego_freq / 2) == 0) hue_delta_this_tick = 1;
 
   HSV hsv = (HSV) { .h = current_led_hue, .s = 255, .v = 255 };
   RGB rgb;
