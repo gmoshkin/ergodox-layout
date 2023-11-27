@@ -384,6 +384,8 @@ static inline uint8_t yego_row_column_to_led_index_internal(uint8_t row, uint8_t
 #define YEGO_FREQ_DEFAULT 4
 static uint8_t yego_freq_saved = YEGO_FREQ_DEFAULT;
 static uint8_t yego_freq = YEGO_FREQ_DEFAULT;
+static uint8_t do_override_digit_rbg = 0;
+static uint32_t override_digit_rbg_value = 0;
 
 void rgb_matrix_indicators_user(void) {
   if (keyboard_config.disable_layer_led) return;
@@ -420,6 +422,47 @@ void rgb_matrix_indicators_user(void) {
       rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
     }
   }
+
+  if (do_override_digit_rbg) {
+      RGB rgb_on  = (RGB) { .r = 0xff, .g = 0xff, .b = 0xff, };
+      RGB rgb_off = (RGB) { .r = 0xff, .g = 0x00, .b = 0x00, };
+
+      rgb = (override_digit_rbg_value & 0x00000001) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_9, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00000002) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_8, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00000004) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_7, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00000008) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_6, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00000010) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_4, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00000020) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_3, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00000040) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_2, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00000080) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_1, rgb.r, rgb.g, rgb.b);
+
+      rgb = (override_digit_rbg_value & 0x00000100) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_O, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00000200) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_I, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00000400) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_U, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00000800) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_Y, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00001000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_R, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00002000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_E, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00004000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_W, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00008000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_Q, rgb.r, rgb.g, rgb.b);
+
+      rgb = (override_digit_rbg_value & 0x00010000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_L, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00020000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_K, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00040000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_J, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00080000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_H, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00100000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_F, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00200000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_D, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00400000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_S, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x00800000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_A, rgb.r, rgb.g, rgb.b);
+
+      rgb = (override_digit_rbg_value & 0x01000000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_gt, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x02000000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_lt, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x04000000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_M, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x08000000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_N, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x10000000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_V, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x20000000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_C, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x40000000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_X, rgb.r, rgb.g, rgb.b);
+      rgb = (override_digit_rbg_value & 0x80000000) ? rgb_on : rgb_off; rgb_matrix_set_color(YEGO_LED_INDEX_KEY_Z, rgb.r, rgb.g, rgb.b);
+  }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -428,6 +471,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         rgblight_mode(1);
       }
+      return false;
+    case RGB_MOD:
+      if (record->event.pressed) do_override_digit_rbg = 1 - do_override_digit_rbg;
       return false;
     case YEGO_RGB_FREQ_UP:
       if (record->event.pressed) ++yego_freq;
@@ -450,41 +496,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 uint32_t layer_state_set_user(uint32_t state) {
 
-  uint8_t layer = biton32(state);
+  override_digit_rbg_value = state;
+  override_digit_rbg_value |= ((uint32_t) SYMBOLS << 0x08);
+  override_digit_rbg_value |= ((uint32_t) MEDIA   << 0x10);
+  override_digit_rbg_value |= ((uint32_t) GAMING  << 0x18);
 
   ergodox_board_led_off();
   ergodox_right_led_1_off();
   ergodox_right_led_2_off();
   ergodox_right_led_3_off();
-  switch (layer) {
-    case 1:
-      ergodox_right_led_1_on();
-      break;
-    case 2:
-      ergodox_right_led_2_on();
-      break;
-    case 3:
-      ergodox_right_led_3_on();
-      break;
-    case 4:
-      ergodox_right_led_1_on();
-      ergodox_right_led_2_on();
-      break;
-    case 5:
-      ergodox_right_led_1_on();
-      ergodox_right_led_3_on();
-      break;
-    case 6:
-      ergodox_right_led_2_on();
-      ergodox_right_led_3_on();
-      break;
-    case 7:
-      ergodox_right_led_1_on();
-      ergodox_right_led_2_on();
-      ergodox_right_led_3_on();
-      break;
-    default:
-      break;
-  }
+  if (state & (1 << SYMBOLS)) ergodox_right_led_1_on();
+  if (state & (1 << MEDIA))   ergodox_right_led_2_on();
+  if (state & (1 << GAMING))  ergodox_right_led_3_on();
   return state;
 };
