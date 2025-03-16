@@ -26,6 +26,13 @@ enum layers {
 #define ST(KEY)    LSFT_T(KEY)
 #define W_USB_P    WEBUSB_PAIR
 #define KC_SPC     KC_SPACE
+#define BOOTLOADER QK_BOOTLOADER
+
+#define STATIC_ASSERT(c, name) static uint8_t name[(c) ? 1 : -1];
+
+void static_asserts(void) {
+  STATIC_ASSERT(QK_BOOTLOADER == 0x00005c00, assert_QK_BOOTLOADER); (void) assert_QK_BOOTLOADER;
+}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -90,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______ , YF_RES  , YF_DEF  ,
 
     // Right hand
-    _______ , _______ , _______ , _______ , _______ , _______ , RESET      ,
+    _______ , _______ , _______ , _______ , _______ , _______ , BOOTLOADER ,
     _______ , KC_WH_U , KC_VOLU , KC_VOLD , KC_MUTE , KC_PSCR , S(KC_PSCR) ,
               KC_WH_D , KC_ACL0 , KC_ACL1 , KC_ACL2 , _______ , KC_MPLY    ,
     _______ , KC_BTN3 , KC_MPLY , KC_MPRV , KC_MNXT , _______ , _______    ,
@@ -499,3 +506,5 @@ uint16_t layer_state_set_user(uint16_t state) {
   if (state & (1 << GAMING))  ergodox_right_led_3_on();
   return state;
 };
+
+// vi: sw=2
