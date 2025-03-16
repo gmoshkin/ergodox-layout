@@ -483,7 +483,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-uint32_t layer_state_set_user(uint32_t state) {
+uint16_t layer_state_set_user(uint16_t state) {
 
   override_digit_rbg_value = state;
   override_digit_rbg_value |= ((uint32_t) SYMBOLS << 0x08);
