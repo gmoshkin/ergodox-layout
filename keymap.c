@@ -504,6 +504,7 @@ uint16_t layer_state_set_user(uint16_t state) {
   if (state & (1 << SYMBOLS)) ergodox_right_led_1_on();
   if (state & (1 << MEDIA))   ergodox_right_led_2_on();
   if (state & (1 << GAMING))  ergodox_right_led_3_on();
+  if (state & (1 << SWAP))  { ergodox_right_led_1_on(); ergodox_right_led_3_on(); }
   return state;
 };
 
